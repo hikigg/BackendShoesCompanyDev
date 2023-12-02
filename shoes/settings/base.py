@@ -34,11 +34,13 @@ LOCAL_APPS = [
     'apps.usuarios',
     'apps.productos',
     'apps.pqrs',
+    'apps.carrito',
 ]
 
 THIRD_APPS = [
     'rest_framework',
     'simple_history',
+    'drf_yasg'
 
 ]
 
