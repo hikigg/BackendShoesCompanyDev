@@ -13,6 +13,6 @@ class CuponesProductoSerializer(serializers.ModelSerializer):
             'descuento': instance.descuento,
             'inicio_oferta': instance.inicio_oferta,
             'fin_oferta': instance.fin_oferta,
-            'producto': instance.producto_id.nombre if instance.producto_id is not None else '',
+            'local': instance.local_usuario_id.nombre_local if instance.local_usuario_id is not None else '',
 
         }

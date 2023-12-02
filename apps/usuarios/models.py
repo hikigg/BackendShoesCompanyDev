@@ -69,6 +69,28 @@ class UsuarioDatos(BaseModel):
         verbose_name = 'Datos de usuario'
         verbose_name_plural = 'Datos de usuarios'
 
+class LocalUsuario(BaseModel):
+    id = models.AutoField(primary_key=True)
+    nombre_local = models.CharField('Nombre local', max_length=40, blank=False, null=False)
+    direccion_local = models.CharField('Direccion local', max_length=50, blank=False, null=False)
+    telefono_local = models.CharField('Telefono local', max_length=10, blank=False, null=False)
+    nit_local = models.CharField('Nit local', max_length=9, blank=False, null=False)
+    historical = HistoricalRecords()
+
+    @property
+    def _history_user(self):
+        return self.changed_by
+
+    @_history_user.setter
+    def _history_user(self, value):
+        self.changed_by = value
+
+    def __str__(self):
+        return self.nombre_local
+
+    class Meta:
+        verbose_name = 'Datos de local'
+        verbose_name_plural = 'Datos de locales'
 
 class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
     username = models.CharField(max_length = 255, unique = True)
@@ -77,6 +99,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
     email = models.EmailField('Correo Electrónico',max_length = 255, unique = True,)
     usuariodatos_id = models.ForeignKey(UsuarioDatos, on_delete=models.CASCADE, verbose_name='Datos de usuario', null=True, related_name='datos_usuario')
     roles_id = models.ForeignKey(Roles, on_delete=models.CASCADE, verbose_name='Rol de usuario', null=True)
+    locales_usuarios = models.ForeignKey(LocalUsuario, on_delete=models.CASCADE, verbose_name='Local para usuario', null=True)
     groups = models.ManyToManyField(
         Group,
         verbose_name='groups',
@@ -110,26 +133,3 @@ class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
         return f'{self.name} {self.last_name}'
     
 
-class LocalUsuario(BaseModel):
-    id = models.AutoField(primary_key=True)
-    usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Seleccionar usuario', null=True, related_name='locales_usuarios')
-    nombre_local = models.CharField('Nombre usuario', max_length=40, blank=False, null=False)
-    direccion_local = models.CharField('Direccion usuario', max_length=50, blank=False, null=False)
-    telefono_local = models.CharField('Telefono', max_length=10, blank=False, null=False)
-    nit_local = models.CharField('Nit', max_length=9, blank=False, null=False)
-    historical = HistoricalRecords()
-
-    @property
-    def _history_user(self):
-        return self.changed_by
-
-    @_history_user.setter
-    def _history_user(self, value):
-        self.changed_by = value
-
-    def __str__(self):
-        return self.nombre_local
-
-    class Meta:
-        verbose_name = 'Datos de local'
-        verbose_name_plural = 'Datos de locales'

@@ -17,6 +17,7 @@ class ProductoSerializer(serializers.ModelSerializer):
             'id': instance.id,
             'nombre' : instance.nombre,
             'descripcion' : instance.descripcion,
+            'marca' : instance.marca,
             'precio' : instance.precio,
             'color' : instance.color,
             'genero' : instance.genero,

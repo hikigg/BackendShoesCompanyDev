@@ -1,10 +1,13 @@
 from rest_framework import status
 from rest_framework import viewsets
+from apps.usuarios.models import Usuario
 from rest_framework.response import Response
-from apps.usuarios.api.serializers.usuario_serializer import UsuarioSerializer
+from apps.usuarios.api.serializers.usuario_serializer import UsuarioSerializer, UsuarioListaSerializer
 
-class UsuarioViewSet(viewsets.ModelViewSet):
+class UsuarioViewSet(viewsets.GenericViewSet):
+    model = Usuario
     serializer_class = UsuarioSerializer
+    lista_serializer_class = UsuarioListaSerializer
 
     def get_queryset(self, pk=None):
         if pk is None:
@@ -12,7 +15,8 @@ class UsuarioViewSet(viewsets.ModelViewSet):
         return self.get_serializer().Meta.model.objects.filter(id=pk, state=True).first()
 
     def list(self, request, *args, **kwargs):
-        usuario_serializer = self.get_serializer(self.get_queryset(), many=True)
+        usuarios = self.get_queryset()
+        usuario_serializer = self.lista_serializer_class(usuarios, many=True)
         return Response(usuario_serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request):
@@ -21,6 +25,11 @@ class UsuarioViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response({'message':'Usuario creado correctamente'}, status=status.HTTP_201_CREATED)
         return Response({'message':'', 'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def retrieve(self, request, pk=None):
+        user = self.get_object(pk)
+        user_serializer = self.serializer_class(user)
+        return Response(user_serializer.data)
 
     def update(self, request, pk=None):
         if self.get_queryset(pk):

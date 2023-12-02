@@ -122,7 +122,7 @@ class CuponesProducto(BaseModel):
     descuento = models.TextField('Descuento de Cupon', max_length=10, blank=False, null=False)
     inicio_oferta = models.DateField('Fecha de inicio cupon', auto_now=True, auto_now_add=False)
     fin_oferta = models.DateField('Fecha de fin cupon', auto_now=True, auto_now_add=False)
-    producto_id = models.ForeignKey(Producto, on_delete=models.CASCADE, verbose_name='Cupon de producto', null=True)
+    local_usuario_id = models.ForeignKey(LocalUsuario, on_delete=models.CASCADE, verbose_name='Local del usuario', null=True)
     historical = HistoricalRecords(inherit=True)
 
     @property
