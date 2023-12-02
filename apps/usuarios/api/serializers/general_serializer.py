@@ -1,0 +1,20 @@
+from rest_framework import serializers
+from apps.usuarios.models import Roles, UsuarioDatos, LocalUsuario
+
+class RolesSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Roles
+        exclude = ('state', 'created_at', 'modified_at', 'deleted_at')
+
+class UsuarioDatosSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UsuarioDatos
+        exclude = ('state', 'created_at', 'modified_at', 'deleted_at')
+
+class LocalUsuarioSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = LocalUsuario
+        exclude = ('state', 'created_at', 'modified_at', 'deleted_at')
