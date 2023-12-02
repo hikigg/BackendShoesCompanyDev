@@ -6,4 +6,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('usuarios/', include('apps.usuarios.api.routers')),
     path('productos/', include('apps.productos.api.routers')),
+    path('pqrs/', include('apps.pqrs.api.routers')),
 ]

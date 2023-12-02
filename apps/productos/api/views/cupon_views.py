@@ -31,9 +31,7 @@ class CuponProductoViewSet(viewsets.ModelViewSet):
             return Response({'message': '', 'error': cupon_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
-        cupon = self.get_queryset().filter(id=pk).first() # get instance
-        if cupon:
-            cupon.state = False
-            cupon.save()
+        if self.get_object().exists():
+            self.get_object().get().delete()
             return Response({'message': 'Cupon de producto elimiando correctamente'}, status=status.HTTP_200_OK)
         return Response({'message': 'No existe un cupon de producto con estos datos'}, status=status.HTTP_400_BAD_REQUEST)

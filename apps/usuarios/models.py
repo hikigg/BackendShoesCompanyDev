@@ -50,6 +50,7 @@ class UsuarioDatos(BaseModel):
     direccion_usuario = models.CharField('Direccion usuario', max_length = 50, blank = False, null = False)
     telefono_usuario = models.CharField('Telefono', max_length=10, blank=False, null=False)
     tipo_documento = models.CharField('Tipo de documento', max_length=5, blank=False, null=False)
+    documento = models.PositiveSmallIntegerField(default=0)
     historical = HistoricalRecords()
 
     @property
@@ -104,8 +105,6 @@ class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
         verbose_name = 'Usuario'
         verbose_name_plural = 'Usuarios'
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'name', 'last_name']
 
     def __str__(self):
         return f'{self.name} {self.last_name}'
@@ -113,7 +112,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
 
 class LocalUsuario(BaseModel):
     id = models.AutoField(primary_key=True)
-    usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Datos de usuario', null=True, related_name='locales_usuarios')
+    usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Seleccionar usuario', null=True, related_name='locales_usuarios')
     nombre_local = models.CharField('Nombre usuario', max_length=40, blank=False, null=False)
     direccion_local = models.CharField('Direccion usuario', max_length=50, blank=False, null=False)
     telefono_local = models.CharField('Telefono', max_length=10, blank=False, null=False)

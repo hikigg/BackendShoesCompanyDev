@@ -13,7 +13,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Usuario
-        exclude = ('state', 'created_at', 'modified_at', 'deleted_at')
+        exclude = ('state', 'created_at', 'modified_at', 'deleted_at', 'is_staff', 'is_superuser', 'is_active', 'groups', 'last_login', 'user_permissions')
 
     # Otros métodos y campos de serializer
 
