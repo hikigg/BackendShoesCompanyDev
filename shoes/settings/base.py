@@ -42,6 +42,7 @@ THIRD_APPS = [
     'simple_history',
     'corsheaders',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     'drf_yasg',
 
 ]
@@ -52,7 +53,11 @@ SWAGGER_SETTINGS = {
     'DOC_EXPANSION': 'none'
 }
 
-TOKEN_EXPIRED_AFTER_SECONDOS = 2000
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
