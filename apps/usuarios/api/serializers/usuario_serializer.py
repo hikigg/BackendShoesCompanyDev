@@ -40,7 +40,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         exclude = (
-        'state', 'created_at', 'modified_at', 'deleted_at', 'is_active', 'groups',
+        'state', 'created_at', 'modified_at', 'deleted_at', 'groups',
         'last_login', 'user_permissions')
 
     def create(self, validated_data):
