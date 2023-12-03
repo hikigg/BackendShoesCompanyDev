@@ -6,7 +6,7 @@ from apps.base.models import BaseModel
 # Create your models here.
 
 class UserManager(BaseUserManager):
-    def _create_user(self, username, email, last_name, name, password, is_staff, is_superuser, **extra_fields):
+    def _create_user(self, username, email, name,last_name, password, is_staff, is_superuser, **extra_fields):
         user = self.model(
             username = username,
             email = email,
@@ -20,12 +20,11 @@ class UserManager(BaseUserManager):
         user.save(using=self.db)
         return user
 
-    def create_user(self, username, email, name, last_name, password=None, **extra_fields):
-        return self._create_user(username, email, name, password, False, False, **extra_fields)
+    def create_user(self, username, email, name,last_name, password=None, **extra_fields):
+        return self._create_user(username, email, name,last_name, password, False, False, **extra_fields)
 
-    def create_superuser(self, username, email, name, last_name, password=None, **extra_fields):
-        return self._create_user(username, email, name, password, True, True, **extra_fields)
-
+    def create_superuser(self, username, email, name,last_name, password=None, **extra_fields):
+        return self._create_user(username, email, name,last_name, password, True, True, **extra_fields)
 class Roles(BaseModel):
 
     id = models.AutoField(primary_key=True)
@@ -116,11 +115,9 @@ class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
         related_name='usuarios_permissions',  # Related name personalizado para user_permissions
         related_query_name='user',
     )
-    #Falta poner para el cambio de contraseña
     image = models.ImageField('Imagen de perfil', upload_to='perfil/', max_length=255, null=True, blank = True)
     is_active = models.BooleanField(default = True)
     is_staff = models.BooleanField(default = False)
-
     historical = HistoricalRecords()
     objects = UserManager()
 
@@ -128,6 +125,8 @@ class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
         verbose_name = 'Usuario'
         verbose_name_plural = 'Usuarios'
 
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
 
     def __str__(self):
         return f'{self.name} {self.last_name}'

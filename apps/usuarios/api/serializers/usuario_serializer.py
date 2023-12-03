@@ -39,7 +39,9 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Usuario
-        fields = '__all__'
+        exclude = (
+        'state', 'created_at', 'modified_at', 'deleted_at', 'is_active', 'groups',
+        'last_login', 'user_permissions')
 
     def create(self, validated_data):
         usuario = Usuario(**validated_data)

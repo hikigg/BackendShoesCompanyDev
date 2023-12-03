@@ -47,6 +47,12 @@ THIRD_APPS = [
 
 INSTALLED_APPS = BASE_APPS + LOCAL_APPS + THIRD_APPS
 
+SWAGGER_SETTINGS = {
+    'DOC_EXPANSION': 'none'
+}
+
+TOKEN_EXPIRED_AFTER_SECONDOS = 10
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

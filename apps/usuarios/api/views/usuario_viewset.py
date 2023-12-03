@@ -4,8 +4,7 @@ from apps.usuarios.models import Usuario
 from rest_framework.response import Response
 from apps.usuarios.api.serializers.usuario_serializer import UsuarioSerializer, UsuarioListaSerializer
 
-class UsuarioViewSet(viewsets.GenericViewSet):
-    model = Usuario
+class UsuarioViewSet(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
     lista_serializer_class = UsuarioListaSerializer
 
@@ -15,8 +14,7 @@ class UsuarioViewSet(viewsets.GenericViewSet):
         return self.get_serializer().Meta.model.objects.filter(id=pk, state=True).first()
 
     def list(self, request, *args, **kwargs):
-        usuarios = self.get_queryset()
-        usuario_serializer = self.lista_serializer_class(usuarios, many=True)
+        usuario_serializer = self.lista_serializer_class(self.get_queryset(), many=True)
         return Response(usuario_serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request):
@@ -26,10 +24,6 @@ class UsuarioViewSet(viewsets.GenericViewSet):
             return Response({'message':'Usuario creado correctamente'}, status=status.HTTP_201_CREATED)
         return Response({'message':'', 'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def retrieve(self, request, pk=None):
-        user = self.get_object(pk)
-        user_serializer = self.serializer_class(user)
-        return Response(user_serializer.data)
 
     def update(self, request, pk=None):
         if self.get_queryset(pk):
