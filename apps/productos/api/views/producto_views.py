@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from apps.productos.api.serializers.producto_serializer import ProductoSerializer
 from rest_framework.permissions import IsAuthenticated
 
+
 class ProductoViewSet(viewsets.ModelViewSet):
     serializer_class = ProductoSerializer
     permission_classes = [IsAuthenticated]
@@ -12,6 +13,10 @@ class ProductoViewSet(viewsets.ModelViewSet):
         if pk is None:
             return self.get_serializer().Meta.model.objects.filter(state=True)
         return self.get_serializer().Meta.model.objects.filter(id=pk, state=True).first()
+
+    def list_auth(self, request, *args, **kwargs):
+        producto_serializer = self.get_serializer(self.get_queryset(), many=True)
+        return Response(producto_serializer.data, status=status.HTTP_200_OK)
 
     def list(self, request, *args, **kwargs):
         producto_serializer = self.get_serializer(self.get_queryset(), many=True)

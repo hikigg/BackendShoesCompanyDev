@@ -50,9 +50,9 @@ class  Producto(BaseModel):
     nombre = models.CharField('Nombre de producto', max_length=150, unique=True, blank=False, null=False)
     descripcion = models.TextField('Descripcion de Producto', max_length=200, blank=False, null=False)
     precio = models.TextField('Precio de Producto', max_length=10, blank=False, null=False)
-    color = models.CharField('Color de producto', max_length=30, unique=True, blank=False, null=False)
-    marca = models.CharField('Marca de producto', max_length=20, unique=True, blank=False, null=False)
-    genero = models.CharField('Genero de producto', max_length=15, unique=True, blank=False, null=False)
+    color = models.CharField('Color de producto', max_length=30,  blank=False, null=False)
+    marca = models.CharField('Marca de producto', max_length=20,  blank=False, null=False)
+    genero = models.CharField('Genero de producto', max_length=15,  blank=False, null=False)
     disponible = models.PositiveSmallIntegerField()
     talla_id = models.ForeignKey(TallasProducto, on_delete=models.CASCADE, verbose_name='Talla de producto', null=True)
     categoria_id = models.ForeignKey(CategoriasProducto, on_delete=models.CASCADE, verbose_name='Categoria de Producto', null=True)
@@ -75,7 +75,7 @@ class  Producto(BaseModel):
         verbose_name_plural = 'Productos'
 
 class ImagenesProducto(BaseModel):
-    image = models.ImageField('Imagen de producto', upload_to='perfil/', max_length=255, null=True, blank = True)
+    image = models.ImageField('Imagen de producto', upload_to='productos/', max_length=255, null=True, blank = True)
     producto_id = models.ForeignKey(Producto, on_delete=models.CASCADE, verbose_name='Producto')
     historical = HistoricalRecords(inherit=True)
 

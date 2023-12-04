@@ -6,7 +6,6 @@ router = DefaultRouter()
 
 router.register(r'usuarios', UsuarioViewSet, basename='usuarios')
 router.register(r'roles', RolesViewSet, basename='roles')
-router.register(r'usuario-datos', UsuarioDatosViewSet, basename='usuario_datos')
 router.register(r'local', LocalUsuarioViewSet, basename='local')
 
 urlpatterns = router.urls

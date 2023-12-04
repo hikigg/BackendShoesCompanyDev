@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework import viewsets
-from apps.usuarios.models import Usuario
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from apps.usuarios.api.serializers.usuario_serializer import UsuarioSerializer
 
@@ -12,8 +12,12 @@ class UsuarioViewSet(viewsets.ModelViewSet):
             return self.get_serializer().Meta.model.objects.filter(state=True)
         return self.get_serializer().Meta.model.objects.filter(id=pk, state=True).first()
 
+    @action(detail=True, methods=['post'])
+    def set_password(self, request, pk=None):
+        pass
+
     def list(self, request, *args, **kwargs):
-        usuario_serializer = self.serializer_class(self.get_queryset(), many=True)
+        usuario_serializer = self.serializer_class(self.get_queryset().filter(is_active=True), many=True)
         return Response(usuario_serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request):
@@ -35,7 +39,7 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     def destroy(self, request, pk=None):
         usuario = self.get_queryset().filter(id=pk).first() # get instance
         if usuario:
-            usuario.state = False
+            usuario.is_active = False
             usuario.save()
             return Response({'message': 'Usuario elimiando correctamente'}, status=status.HTTP_200_OK)
         return Response({'message': 'No existe un suuario con estos datos'}, status=status.HTTP_400_BAD_REQUEST)

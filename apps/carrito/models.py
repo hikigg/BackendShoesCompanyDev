@@ -1,7 +1,7 @@
 from django.db import models
 from apps.base.models import BaseModel
 from simple_history.models import HistoricalRecords
-from apps.usuarios.models import UsuarioDatos
+from apps.usuarios.models import Usuario
 from apps.productos.models import Producto, CuponesProducto, OfertasProducto
 
 # Create your models here.
@@ -12,7 +12,7 @@ class CarritoArticulos(BaseModel):
     impuesto = models.TextField('Impuesto de articulos', max_length=10, blank=False, null=False)
     total = models.TextField('Total de articulos', max_length=12, blank=False, null=False)
     producto_id = models.ForeignKey(Producto, on_delete=models.CASCADE, verbose_name='Oferta de articulos', null=True)
-    usuariodatos_id = models.ForeignKey(UsuarioDatos, on_delete=models.CASCADE, verbose_name='Datos del usuario para los articulos', null=True)
+    usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Datos del usuario para los articulos', null=True)
     cupones_id = models.ForeignKey(CuponesProducto, on_delete=models.CASCADE, verbose_name='Cupon de articulos')
     historical = HistoricalRecords(inherit=True)
 
@@ -35,7 +35,7 @@ class CarritoPedido(BaseModel):
     codigo = models.TextField('Codigo de pedido', max_length=10, blank=False, null=False)
     fecha_pedido = models.DateField('Fecha de pedido', auto_now=True, auto_now_add=False)
     carrito_articulo_id = models.ForeignKey(CarritoArticulos, on_delete=models.CASCADE, verbose_name='Articulos pedido')
-    usuariodatos_id = models.ForeignKey(UsuarioDatos, on_delete=models.CASCADE, verbose_name='Datos del usuario para el pedido', null=True)
+    usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Datos del usuario para el pedido', null=True)
     historical = HistoricalRecords(inherit=True)
 
     @property

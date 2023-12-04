@@ -45,31 +45,6 @@ class Roles(BaseModel):
         return self.nombre_rol if self.nombre_rol else 'Sin nombre de rol'
 
 
-class UsuarioDatos(BaseModel):
-    id = models.AutoField(primary_key=True)
-    nombre_usuario = models.CharField('Nombre usuario', max_length=40, blank=False, null=False)
-    apellido_usuario = models.CharField('Apellido', max_length=40, blank=False, null=False)
-    direccion_usuario = models.CharField('Direccion usuario', max_length=50, blank=False, null=False)
-    telefono_usuario = models.CharField('Telefono', max_length=10, blank=False, null=False)
-    tipo_documento = models.CharField('Tipo de documento', max_length=5, blank=False, null=False)
-    documento = models.PositiveSmallIntegerField(default=0)
-    historical = HistoricalRecords()
-
-    @property
-    def _history_user(self):
-        return self.changed_by
-
-    @_history_user.setter
-    def _history_user(self, value):
-        self.changed_by = value
-
-    def __str__(self):
-        return self.nombre_usuario
-
-    class Meta:
-        verbose_name = 'Datos de usuario'
-        verbose_name_plural = 'Datos de usuarios'
-
 
 class LocalUsuario(BaseModel):
     id = models.AutoField(primary_key=True)
@@ -100,11 +75,12 @@ class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
     name = models.CharField('Nombres', max_length=255, blank=True, null=True)
     last_name = models.CharField('Apellidos', max_length=255, blank=True, null=True)
     email = models.EmailField('Correo Electrónico', max_length=255, unique=True, )
-    usuariodatos_id = models.ForeignKey(UsuarioDatos, on_delete=models.CASCADE, verbose_name='Datos de usuario',
-                                        null=True, related_name='datos_usuario')
+    direccion = models.CharField('Direccion usuario', max_length=50, blank=False, null=False)
+    telefono = models.CharField('Telefono usuario', max_length=10, blank=False, null=False)
+    tipo_documento = models.CharField('Tipo de documento', max_length=5, blank=False, null=False)
+    documento = models.PositiveSmallIntegerField(default=0)
     roles_id = models.ForeignKey(Roles, on_delete=models.CASCADE, verbose_name='Rol de usuario', null=True)
-    locales_usuarios = models.ForeignKey(LocalUsuario, on_delete=models.CASCADE, verbose_name='Local para usuario',
-                                         null=True)
+    locales_usuarios = models.ForeignKey(LocalUsuario, on_delete=models.CASCADE, verbose_name='Local para usuario', null=True)
     groups = models.ManyToManyField(
         Group,
         verbose_name='groups',
@@ -121,7 +97,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
         related_name='usuarios_permissions',  # Related name personalizado para user_permissions
         related_query_name='user',
     )
-    image = models.ImageField('Imagen de perfil', upload_to='perfil/', max_length=255, null=True, blank=True)
+    image = models.ImageField('Imagen de perfil', upload_to='usuarios/', max_length=255, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     historical = HistoricalRecords()

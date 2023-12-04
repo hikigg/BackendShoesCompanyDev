@@ -1,7 +1,7 @@
 from django.db import models
 from apps.base.models import BaseModel
 from simple_history.models import HistoricalRecords
-from apps.usuarios.models import LocalUsuario, UsuarioDatos
+from apps.usuarios.models import LocalUsuario, Usuario
 from datetime import timedelta
 from django.utils import timezone
 
@@ -40,7 +40,7 @@ class PqrInformacion(BaseModel):
     fecha_estimada = models.DateField('Fecha de estimada', default=get_fecha_estimada_default)
     archivos_pqrs = models.FileField(upload_to=upload_to_pqrs)
     local_id = models.ForeignKey(LocalUsuario, on_delete=models.CASCADE, verbose_name='Local para la peticion', null=True)
-    usuariodatos_id = models.ForeignKey(UsuarioDatos, on_delete=models.CASCADE, verbose_name='Datos del usuario para la peticion', null=True)
+    usuariodatos_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Datos del usuario para la peticion', null=True)
     historical = HistoricalRecords(inherit=True)
 
     @property
@@ -68,7 +68,7 @@ class PqrRespuesta(BaseModel):
     fecha_respuesta = models.DateField('Fecha de respuesta', auto_now=True, auto_now_add=False)
     archivos_respuesta_pqrs = models.FileField(upload_to=upload_to_respuesta_pqrs)
     local_id = models.ForeignKey(LocalUsuario, on_delete=models.CASCADE, verbose_name='Local para la respuesta', null=True)
-    usuariodatos_id = models.ForeignKey(UsuarioDatos, on_delete=models.CASCADE, verbose_name='Datos del usuario para la peticion', null=True)
+    usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Datos del usuario para la peticion', null=True)
     pqr_id = models.ForeignKey(PqrInformacion, on_delete=models.CASCADE, verbose_name='Pqr informacion de respuesta')
     historical = HistoricalRecords(inherit=True)
 
