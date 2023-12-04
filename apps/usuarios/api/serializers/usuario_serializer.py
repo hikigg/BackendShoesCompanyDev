@@ -1,13 +1,12 @@
 from rest_framework import serializers
 from apps.usuarios.models import Usuario
 from apps.usuarios.api.serializers.general_serializer import RolesSerializer, UsuarioDatosSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-class UsuarioListaSerializer(serializers.ModelSerializer):
+class CustomUsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        exclude = (
-        'state', 'created_at', 'modified_at', 'deleted_at', 'is_staff', 'is_superuser', 'is_active', 'groups',
-        'last_login', 'user_permissions')
+        fields = ('username', 'email', 'name', 'last_name')
 
     def create(self, validated_data):
         image = validated_data.get('image', None)
@@ -55,8 +54,5 @@ class UsuarioSerializer(serializers.ModelSerializer):
         update_usuario.save()
         return update_usuario
 
-class UsuarioTokenSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Usuario
-        fields = ('username', 'email')
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    pass

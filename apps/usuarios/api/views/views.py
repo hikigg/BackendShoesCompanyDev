@@ -1,91 +1,42 @@
-from django.utils import timezone
-from django.contrib.sessions.models import Session
-from rest_framework.views import APIView
+from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
-from apps.usuarios.api.serializers.usuario_serializer import UsuarioTokenSerializer
+from rest_framework.generics import GenericAPIView
+from rest_framework_simplejwt.views import TokenObtainPairView
+from apps.usuarios.api.serializers.usuario_serializer import (
+    CustomTokenObtainPairSerializer, CustomUsuarioSerializer)
+from rest_framework_simplejwt.tokens import RefreshToken
+from apps.usuarios.models import Usuario
 
 
-class UserToken(APIView):
-    def get(self, request, *args, **kwargs):
-        username = request.GET.get('username')
-        try:
-            user_token = Token.objects.get(
-                user=UsuarioTokenSerializer().Meta.model.objects.filter(username=username).first()
-            )
-            return Response({
-                'token': user_token.key
-            })
-        except:
-            return Response({
-                'error': 'credenciales enviadas incorrectas'
-            }, status=status.HTTP_400_BAD_REQUEST)
 
-
-class Login(ObtainAuthToken):
+class Login(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
     def post(self, request, *args, **kwargs):
-        login_serializer = self.serializer_class(data=request.data, context={'request': request})
-        if login_serializer.is_valid():
-            user = login_serializer.validated_data['user']
-            if user.is_active:
-                token, created = Token.objects.get_or_create(user=user)
-                user_serializer = UsuarioTokenSerializer(user)
-                if created:
-                    return Response({
-                        'token': token.key,
-                        'user': user_serializer.data,
-                        'message': 'Inicio de sesion exitoso.'
-                    }, status=status.HTTP_201_CREATED)
-                else:
+        username = request.data.get('username', '')
+        password = request.data.get('password', '')
+        user = authenticate(
+            username=username,
+            password=password
+        )
+        if user:
+            login_serializer = self.serializer_class(data=request.data)
+            if login_serializer.is_valid():
+                user_serializer = CustomUsuarioSerializer(user)
+                return Response({
+                    'token' : login_serializer.validated_data.get('access'),
+                    'refresh-token' : login_serializer.validated_data.get('refresh'),
+                    'user': user_serializer.data,
+                    'message': 'Inicio de Sesion exitoso'
+                }, status=status.HTTP_200_OK)
+            return Response({'error': 'Contraseña o nombre de usuario incorrectas'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Contraseña o nombre de usuario incorrectas'}, status=status.HTTP_400_BAD_REQUEST)
 
-                    """"
-                    all_sessions = Session.objects.filter(expire_date__gte=timezone.now())
-                    if all_sessions.exists():
-                        for session in all_sessions:
-                            session_data = session.get_decoded()
-                            if user.id == int(session_data.get('_auth_user_id')):
-                                session.delete()
-                    token.delete()
-                    token = Token.objects.create(user = user)
-                    return Response({
-                        'token': token.key,
-                        'user': user_serializer.data,
-                        'message': 'Inicio de sesion exitoso.'
-                    }, status=status.HTTP_201_CREATED)
-                    """
-                    token.delete()
-                    return Response({'error': 'Ya se ha iniciado sesion con este usuario'},
-                                    status=status.HTTP_409_CONFLICT)
-            else:
-                return Response({'error': 'Este usuario no puede iniciar sesion'}, status=status.HTTP_401_UNAUTHORIZED)
-        else:
-            return Response({'error': 'Nombre de usuario o contraseña incorrectas'}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({'message': 'Hola desde response'}, status=status.HTTP_200_OK)
-
-
-class Logout(APIView):
-
+class Logout(GenericAPIView):
     def post(self, request, *args, **kwargs):
-        try:
-            token = request.POST.get('token')
-            token = Token.objects.filter(key=token).first()
-            if token:
-                user = token.user
-                all_sessions = Session.objects.filter(expire_date__gte=timezone.now())
-                if all_sessions.exists():
-                    for session in all_sessions:
-                        session_data = session.get_decoded()
-                        if user.id == int(session_data.get('_auth_user_id')):
-                            session.delete()
-                token.delete()
-                session_message = 'Sesiones de usuario eliminadas'
-                token_message = 'Token eliminado'
-                return Response({'token_message': token_message, 'session_message': session_message},
-                                status=status.HTTP_200_OK)
-            return Response({'error': 'No se ha encontrado un usuario con estas credenciales'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        except:
-            return Response({'error': 'No se ha encontrado token en la peticion'}, status=status.HTTP_409_CONFLICT)
+        user = Usuario.objects.filter(id=request.data.get('user', '')).first()
+        if user.exists():
+            RefreshToken.for_user(user.first())
+            return Response({'message': 'Sesion cerrada correctamente'}, status=status.HTTP_200_OK)
+        return Response({'error': 'No existe este usuario'}, status=status.HTTP_400_BAD_REQUEST)

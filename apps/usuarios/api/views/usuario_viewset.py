@@ -2,11 +2,10 @@ from rest_framework import status
 from rest_framework import viewsets
 from apps.usuarios.models import Usuario
 from rest_framework.response import Response
-from apps.usuarios.api.serializers.usuario_serializer import UsuarioSerializer, UsuarioListaSerializer
+from apps.usuarios.api.serializers.usuario_serializer import UsuarioSerializer
 
 class UsuarioViewSet(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
-    lista_serializer_class = UsuarioListaSerializer
 
     def get_queryset(self, pk=None):
         if pk is None:
@@ -14,7 +13,7 @@ class UsuarioViewSet(viewsets.ModelViewSet):
         return self.get_serializer().Meta.model.objects.filter(id=pk, state=True).first()
 
     def list(self, request, *args, **kwargs):
-        usuario_serializer = self.lista_serializer_class(self.get_queryset(), many=True)
+        usuario_serializer = self.serializer_class(self.get_queryset(), many=True)
         return Response(usuario_serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request):
