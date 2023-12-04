@@ -2,8 +2,11 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
 from apps.productos.api.serializers.producto_serializer import ProductoSerializer
+from rest_framework.permissions import IsAuthenticated
+
 class ProductoViewSet(viewsets.ModelViewSet):
     serializer_class = ProductoSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self, pk=None):
         if pk is None:
