@@ -47,7 +47,7 @@ class TallasProducto(BaseModel):
         verbose_name_plural = 'Tallas de Producto'
 
 class  Producto(BaseModel):
-    nombre = models.CharField('Nombre de producto', max_length=150, unique=True, blank=False, null=False)
+    nombre = models.CharField('Nombre de producto', max_length=150, blank=False, null=False)
     descripcion = models.TextField('Descripcion de Producto', max_length=200, blank=False, null=False)
     precio = models.TextField('Precio de Producto', max_length=10, blank=False, null=False)
     color = models.CharField('Color de producto', max_length=30,  blank=False, null=False)
