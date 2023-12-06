@@ -2,6 +2,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from apps.pqrs.api.serializers.pqrtipo_peticion import PqrTipoPeticion
+from rest_framework.permissions import AllowAny
+
 
 class PqrTipoPeticionViewSet(viewsets.ModelViewSet):
     serializer_class = PqrTipoPeticion

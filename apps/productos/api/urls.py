@@ -10,6 +10,6 @@ urlpatterns = [
     path('categorias/', CategoriasProductoViewSet.as_view(), name = 'categorias'),
     path('imagen/', ImagenProductoViewSet.as_view(), name = 'imagen'),
     path('oferta/', OfertaProductoViewSet.as_view(), name = 'oferta'),
-    path('cupon', CuponProductoViewSet, name = 'cupon'),
-    path('productos_sin', ProductoSinAuthViewSet, name = 'productos_sin'),
+    path('cupon', CuponProductoViewSet.as_view(), name = 'cupon'),
+    path('productos_sin', ProductoSinAuthViewSet.as_view(), name = 'productos_sin'),
 ]

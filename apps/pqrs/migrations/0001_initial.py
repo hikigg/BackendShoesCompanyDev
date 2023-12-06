@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('descripcion', models.TextField(max_length=255, null=True, unique=True, verbose_name='Descripcion peticion')),
                 ('tiempo_restante', models.DateField(auto_now_add=True, verbose_name='Fecha de timepo restante')),
                 ('fecha_estimada', models.DateField(default=apps.pqrs.models.PqrInformacion.get_fecha_estimada_default, verbose_name='Fecha de estimada')),
-                ('archivos_pqrs', models.FileField(upload_to=apps.pqrs.models.PqrInformacion.upload_to_pqrs)),
+                ('archivos_pqrs', models.FileField(upload_to='pqrs/pqrs_informacion/')),
                 ('local_id', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='usuarios.localusuario', verbose_name='Local para la peticion')),
                 ('usuariodatos_id', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='usuarios.usuariodatos', verbose_name='Datos del usuario para la peticion')),
             ],
@@ -49,7 +49,7 @@ class Migration(migrations.Migration):
                 ('deleted_at', models.DateField(auto_now=True, verbose_name='Fecha eliminacion')),
                 ('descripcion', models.TextField(max_length=255, null=True, unique=True, verbose_name='Descripcion respuesta a peticion')),
                 ('fecha_respuesta', models.DateField(auto_now=True, verbose_name='Fecha de respuesta')),
-                ('archivos_respuesta_pqrs', models.FileField(upload_to=apps.pqrs.models.PqrRespuesta.upload_to_respuesta_pqrs)),
+                ('archivos_respuesta_pqrs', models.FileField(upload_to='pqrs/pqrs_respuesta/')),
                 ('pqr_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pqrs.pqrinformacion', verbose_name='Pqr informacion de respuesta')),
             ],
             options={

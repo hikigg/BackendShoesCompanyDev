@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from apps.usuarios.api.serializers.usuario_serializer import UsuarioSerializer
+from apps.usuarios.api.serializers.usuario_serializer import UsuarioSerializer, PasswordSerializer
 
 class UsuarioViewSet(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
@@ -12,9 +12,22 @@ class UsuarioViewSet(viewsets.ModelViewSet):
             return self.get_serializer().Meta.model.objects.filter(state=True)
         return self.get_serializer().Meta.model.objects.filter(id=pk, state=True).first()
 
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['post'], url_path='cambio_pass')
     def set_password(self, request, pk=None):
-        pass
+        user = self.get_object(pk)
+        password_serializer = PasswordSerializer(data=request.data)
+        if password_serializer.is_valid():
+            user.set_password(password_serializer.validated_data['password'])
+            user.save()
+            return Response({
+                'message': 'Contraseña actualizada correctamente'
+            })
+        return Response({
+            'message': 'Hay errores en la información enviada',
+            'errors': password_serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+
 
     def list(self, request, *args, **kwargs):
         usuario_serializer = self.serializer_class(self.get_queryset().filter(is_active=True), many=True)

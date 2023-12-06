@@ -2,9 +2,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from apps.pqrs.api.serializers.pqrespuesta_serializer import PqrRespuestaSerializer
+from rest_framework.permissions import IsAuthenticated
 
 class PqrRespuestaViewSet(viewsets.ModelViewSet):
     serializer_class = PqrRespuestaSerializer
+    permission_classes = [IsAuthenticated]
+
 
     def get_queryset(self, pk=None):
         if pk is None:

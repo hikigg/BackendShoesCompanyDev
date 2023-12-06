@@ -8,25 +8,25 @@ from apps.base.models import BaseModel
 # Create your models here.
 
 class UserManager(BaseUserManager):
-    def _create_user(self, username, email, name,last_name, password, is_staff, is_superuser, **extra_fields):
+    def _create_user(self, username, email, name, last_name, password, is_staff, is_superuser, **extra_fields):
         user = self.model(
-            username = username,
-            email = email,
-            name = name,
-            last_name = last_name,
-            is_staff = is_staff,
-            is_superuser = is_superuser,
+            username=username,
+            email=email,
+            name=name,
+            last_name=last_name,
+            is_staff=is_staff,
+            is_superuser=is_superuser,
             **extra_fields
         )
         user.set_password(password)
         user.save(using=self.db)
         return user
 
-    def create_user(self, username, email, name,last_name, password=None, **extra_fields):
-        return self._create_user(username, email, name,last_name, password, False, False, **extra_fields)
+    def create_user(self, username, email, name, last_name, password=None, **extra_fields):
+        return self._create_user(username, email, name, last_name, password, False, False, **extra_fields)
 
-    def create_superuser(self, username, email, name,last_name, password=None, **extra_fields):
-        return self._create_user(username, email, name,last_name, password, True, True, **extra_fields)
+    def create_superuser(self, username, email, name, last_name, password=None, **extra_fields):
+        return self._create_user(username, email, name, last_name, password, True, True, **extra_fields)
 
 class Roles(BaseModel):
     id = models.AutoField(primary_key=True)
@@ -52,6 +52,7 @@ class LocalUsuario(BaseModel):
     direccion_local = models.CharField('Direccion local', max_length=50, blank=False, null=False)
     telefono_local = models.CharField('Telefono local', max_length=10, blank=False, null=False)
     nit_local = models.CharField('Nit local', max_length=9, blank=False, null=False)
+    image = models.ImageField('Imagen de local', upload_to='locales/', max_length=255, null=True, blank=True)
     historical = HistoricalRecords()
 
     @property
@@ -97,7 +98,6 @@ class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
         related_name='usuarios_permissions',  # Related name personalizado para user_permissions
         related_query_name='user',
     )
-    image = models.ImageField('Imagen de perfil', upload_to='usuarios/', max_length=255, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     historical = HistoricalRecords()

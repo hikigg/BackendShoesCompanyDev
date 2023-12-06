@@ -14,10 +14,6 @@ class ProductoViewSet(viewsets.ModelViewSet):
             return self.get_serializer().Meta.model.objects.filter(state=True)
         return self.get_serializer().Meta.model.objects.filter(id=pk, state=True).first()
 
-    def list_auth(self, request, *args, **kwargs):
-        producto_serializer = self.get_serializer(self.get_queryset(), many=True)
-        return Response(producto_serializer.data, status=status.HTTP_200_OK)
-
     def list(self, request, *args, **kwargs):
         producto_serializer = self.get_serializer(self.get_queryset(), many=True)
         return Response(producto_serializer.data, status=status.HTTP_200_OK)

@@ -2,11 +2,11 @@ from django.db import models
 from apps.base.models import BaseModel
 from simple_history.models import HistoricalRecords
 from apps.usuarios.models import Usuario
-from apps.productos.models import Producto, CuponesProducto, OfertasProducto
+from apps.productos.models import Producto, CuponesProducto
 
 # Create your models here.
 
-class CarritoArticulos(BaseModel):
+class CarritoDetalle(BaseModel):
     cantidad = models.PositiveSmallIntegerField()
     precio = models.TextField('Precio de articulos', max_length=10, blank=False, null=False)
     impuesto = models.TextField('Impuesto de articulos', max_length=10, blank=False, null=False)
@@ -28,13 +28,13 @@ class CarritoArticulos(BaseModel):
         return str(self.cantidad)
 
     class Meta:
-        verbose_name = 'Carrito articulo'
-        verbose_name_plural = 'Carrito articulos'
+        verbose_name = 'Detalle de carrito'
+        verbose_name_plural = 'Detalles de Carrito'
 
 class CarritoPedido(BaseModel):
     codigo = models.TextField('Codigo de pedido', max_length=10, blank=False, null=False)
     fecha_pedido = models.DateField('Fecha de pedido', auto_now=True, auto_now_add=False)
-    carrito_articulo_id = models.ForeignKey(CarritoArticulos, on_delete=models.CASCADE, verbose_name='Articulos pedido')
+    carrito_id = models.ForeignKey(CarritoDetalle, on_delete=models.CASCADE, verbose_name='Articulos pedido')
     usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Datos del usuario para el pedido', null=True)
     historical = HistoricalRecords(inherit=True)
 
@@ -52,4 +52,4 @@ class CarritoPedido(BaseModel):
 
     class Meta:
         verbose_name = 'Pedido de carrito'
-        verbose_name_plural = 'Pedido de carrito'
+        verbose_name_plural = 'Pedidos de carrito'
