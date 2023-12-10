@@ -33,7 +33,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         exclude = (
-        'state', 'created_at', 'modified_at', 'deleted_at', 'groups', 'last_login', 'user_permissions')
+        'state', 'is_staff', 'is_active', 'is_superuser', 'created_at', 'modified_at', 'deleted_at', 'groups', 'last_login', 'user_permissions')
 
     def create(self, validated_data):
         image = validated_data.get('image', None)

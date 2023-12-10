@@ -13,7 +13,6 @@ class CarritoDetalleViewSet(viewsets.ModelViewSet):
             return self.get_serializer().Meta.model.objects.filter(state=True)
         return self.get_serializer().Meta.model.objects.filter(id=pk, state=True).first()
 
-
     def list(self, request, *args, **kwargs):
         carrito_serializer = self.get_serializer(self.get_queryset(), many=True)
         return Response(carrito_serializer.data, status=status.HTTP_200_OK)

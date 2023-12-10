@@ -4,7 +4,6 @@ from simple_history.models import HistoricalRecords
 from apps.usuarios.models import Usuario
 from apps.productos.models import Producto, CuponesProducto
 
-# Create your models here.
 
 class CarritoDetalle(BaseModel):
     cantidad = models.PositiveSmallIntegerField()
@@ -13,7 +12,7 @@ class CarritoDetalle(BaseModel):
     total = models.TextField('Total de articulos', max_length=12, blank=False, null=False)
     producto_id = models.ForeignKey(Producto, on_delete=models.CASCADE, verbose_name='Oferta de articulos', null=True)
     usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Datos del usuario para los articulos', null=True)
-    cupones_id = models.ForeignKey(CuponesProducto, on_delete=models.CASCADE, verbose_name='Cupon de articulos')
+    cupones_id = models.ForeignKey(CuponesProducto, on_delete=models.CASCADE, verbose_name='Cupon de articulos', null=True)
     historical = HistoricalRecords(inherit=True)
 
     @property

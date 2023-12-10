@@ -6,7 +6,7 @@ from datetime import timedelta
 from django.utils import timezone
 
 class PqrPeticion(BaseModel):
-    descripcion = models.CharField('Tipo de peticion', max_length=20, blank=False, null=True,unique=True)
+    descripcion = models.CharField('Tipo de peticion', max_length=20, blank=False, null=True)
     historical = HistoricalRecords(inherit=True)
 
     @property
@@ -35,7 +35,7 @@ class PqrInformacion(BaseModel):
     tiempo_restante = models.DateField('Fecha de timepo restante', auto_now=False, auto_now_add=True)
     fecha_estimada = models.DateField('Fecha de estimada', default=get_fecha_estimada_default)
     local_id = models.ForeignKey(LocalUsuario, on_delete=models.CASCADE, verbose_name='Local para la peticion', null=True)
-    usuariodatos_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Datos del usuario para la peticion', null=True)
+    usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Usuario', null=True)
     historical = HistoricalRecords(inherit=True)
 
     @property
@@ -59,7 +59,7 @@ class PqrRespuesta(BaseModel):
     descripcion = models.TextField('Descripcion respuesta a peticion', max_length=255, blank=False, null=True, unique=True)
     fecha_respuesta = models.DateField('Fecha de respuesta', auto_now=True, auto_now_add=False)
     local_id = models.ForeignKey(LocalUsuario, on_delete=models.CASCADE, verbose_name='Local para la respuesta', null=True)
-    usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Datos del usuario para la peticion', null=True)
+    usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Usuario', null=True)
     pqr_id = models.ForeignKey(PqrInformacion, on_delete=models.CASCADE, verbose_name='Pqr informacion de respuesta')
     historical = HistoricalRecords(inherit=True)
 
@@ -80,7 +80,7 @@ class PqrRespuesta(BaseModel):
 
 class ArchivosPqrInformacion(BaseModel):
     def upload_to_pqrs(instance, filename):
-        return f"pqrs/pqrs_informacion/{instance.peticion_pqr_id}/{filename}"
+        return f"pqrs/pqrs_informacion/{instance.pqr_id}/{filename}"
 
     codigo = models.TextField('Codigo de archivo', max_length=10, blank=False, null=False)
     archivos_pqrs = models.FileField(upload_to=upload_to_pqrs)
@@ -104,7 +104,7 @@ class ArchivosPqrInformacion(BaseModel):
 
 class ArchivosPqrRespuesta(BaseModel):
     def upload_to_respuesta_pqrs(instance, filename):
-        return f"pqrs/pqrs_respuesta/{instance.peticion_pqr_id}/{filename}"
+        return f"pqrs/pqrs_respuesta/{instance.pqr_id}/{filename}"
 
     codigo = models.TextField('Codigo de archivo', max_length=10, blank=False, null=False)
     archivos_respuesta_pqrs = models.FileField(upload_to=upload_to_respuesta_pqrs)

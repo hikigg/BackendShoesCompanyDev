@@ -44,33 +44,6 @@ class Roles(BaseModel):
     def __str__(self):
         return self.nombre_rol if self.nombre_rol else 'Sin nombre de rol'
 
-
-
-class LocalUsuario(BaseModel):
-    id = models.AutoField(primary_key=True)
-    nombre_local = models.CharField('Nombre local', max_length=40, blank=False, null=False)
-    direccion_local = models.CharField('Direccion local', max_length=50, blank=False, null=False)
-    telefono_local = models.CharField('Telefono local', max_length=10, blank=False, null=False)
-    nit_local = models.CharField('Nit local', max_length=9, blank=False, null=False)
-    image = models.ImageField('Imagen de local', upload_to='locales/', max_length=255, null=True, blank=True)
-    historical = HistoricalRecords()
-
-    @property
-    def _history_user(self):
-        return self.changed_by
-
-    @_history_user.setter
-    def _history_user(self, value):
-        self.changed_by = value
-
-    def __str__(self):
-        return self.nombre_local
-
-    class Meta:
-        verbose_name = 'Datos de local'
-        verbose_name_plural = 'Datos de locales'
-
-
 class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
     username = models.CharField(max_length=255, unique=True)
     name = models.CharField('Nombres', max_length=255, blank=True, null=True)
@@ -81,7 +54,6 @@ class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
     tipo_documento = models.CharField('Tipo de documento', max_length=5, blank=False, null=False, default='')
     documento = models.PositiveSmallIntegerField(default=0)
     roles_id = models.ForeignKey(Roles, on_delete=models.CASCADE, verbose_name='Rol de usuario', null=True)
-    locales_usuarios = models.ForeignKey(LocalUsuario, on_delete=models.CASCADE, verbose_name='Local para usuario', null=True)
     groups = models.ManyToManyField(
         Group,
         verbose_name='groups',
@@ -112,5 +84,32 @@ class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
 
     def __str__(self):
         return f'{self.name} {self.last_name}'
+
+
+class LocalUsuario(BaseModel):
+    id = models.AutoField(primary_key=True)
+    nombre_local = models.CharField('Nombre local', max_length=40, blank=False, null=False)
+    direccion_local = models.CharField('Direccion local', max_length=50, blank=False, null=False)
+    telefono_local = models.CharField('Telefono local', max_length=10, blank=False, null=False)
+    nit_local = models.CharField('Nit local', max_length=9, blank=False, null=False)
+    image = models.ImageField('Imagen de local', upload_to='locales/', max_length=255, null=True, blank=True)
+    usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Usuario', null=True)
+    historical = HistoricalRecords()
+
+    @property
+    def _history_user(self):
+        return self.changed_by
+
+    @_history_user.setter
+    def _history_user(self, value):
+        self.changed_by = value
+
+    def __str__(self):
+        return self.nombre_local
+
+    class Meta:
+        verbose_name = 'Datos de local'
+        verbose_name_plural = 'Datos de locales'
+
 
 

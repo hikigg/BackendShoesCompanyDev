@@ -17,5 +17,7 @@ class ImagenSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         return {
             'id': instance.id,
-            'producto' : instance.producto_id.nombre if instance.producto_id is not None else '',
+            'codigo': instance.codigo,
+            'image': instance.image.url,
+            'producto': instance.producto_id.nombre if instance.producto_id is not None else '',
         }

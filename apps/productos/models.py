@@ -75,6 +75,7 @@ class  Producto(BaseModel):
         verbose_name_plural = 'Productos'
 
 class ImagenesProducto(BaseModel):
+    codigo = models.TextField('Codigo de imagen', max_length=10, blank=False, null=False, default=0)
     image = models.ImageField('Imagen de producto', upload_to='productos/', max_length=255, null=True, blank = True)
     producto_id = models.ForeignKey(Producto, on_delete=models.CASCADE, verbose_name='Producto')
     historical = HistoricalRecords(inherit=True)
@@ -88,7 +89,7 @@ class ImagenesProducto(BaseModel):
         self.changed_by = value
 
     def __str__(self):
-        return self.image
+        return self.codigo
 
     class Meta:
         verbose_name = 'Imagen de Producto'

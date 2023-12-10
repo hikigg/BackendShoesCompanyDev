@@ -12,6 +12,9 @@ class LocalUsuarioSerializer(serializers.ModelSerializer):
             'nombre': instance.nombre_local,
             'direccion': instance.direccion_local,
             'nit': instance.nit_local,
-            'image' : instance.image.url if instance.image is not None else '',
+            'image': instance.image.url if instance.image and hasattr(instance.image, 'url') else '',
             'telefono': instance.telefono_local,
+            'nombre_usuario': instance.usuario_id.name if instance.usuario_id is not None else '',
+            'apellidos_usuario': instance.usuario_id.last_name if instance.usuario_id is not None else '',
+            'documento': instance.usuario_id.documento if instance.usuario_id is not None else '',
         }
