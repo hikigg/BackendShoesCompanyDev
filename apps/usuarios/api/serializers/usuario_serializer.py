@@ -21,11 +21,6 @@ class CustomUsuarioSerializer(serializers.ModelSerializer):
             'telefono_usuario':instance.telefono,
             'tipo_documento': instance.tipo_documento,
             'documento_identidad': instance.documento,
-            'nombre_local': instance.locales_usuarios.nombre_local if instance.locales_usuarios is not None else '',
-            'direccion_local': instance.locales_usuarios.direccion_local if instance.locales_usuarios is not None else '',
-            'nit_local': instance.locales_usuarios.nit_local if instance.locales_usuarios is not None else '',
-            'telefono_local': instance.locales_usuarios.telefono_local if instance.locales_usuarios is not None else '',
-            'imagen_local': instance.locales_usuarios.image.url if instance.locales_usuarios is not None else '',
         }
 
 class UsuarioSerializer(serializers.ModelSerializer):
