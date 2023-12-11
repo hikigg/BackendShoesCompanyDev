@@ -20,13 +20,6 @@ class CarritoDetalleViewSet(viewsets.ModelViewSet):
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            cantidad = serializer.validated_data.get('cantidad')
-            precio = serializer.validated_data.get('precio')
-
-            total = serializer.calcular_total(cantidad, precio)  # Calcular el total
-
-            serializer.validated_data['total'] = total  # Asignar el total al serializer antes de guardar
-
             serializer.save()
             return Response({'message': 'Detalles de carrito creado correctamente'}, status=status.HTTP_201_CREATED)
         return Response({'message': '', 'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
