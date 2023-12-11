@@ -8,7 +8,7 @@ class CarritoDetalleSerializer(serializers.ModelSerializer):
         exclude = ('state', 'created_at', 'modified_at', 'deleted_at')
 
     def calcular_total(self, cantidad, precio):
-        return cantidad * float(precio)  # Realiza el cálculo del total
+        return cantidad * precio  # Realiza el cálculo del total
 
     def validate(self, data):
         cantidad = data.get('cantidad')
