@@ -7,6 +7,9 @@ class CarritoDetalleSerializer(serializers.ModelSerializer):
         model = CarritoDetalle
         exclude = ('state', 'created_at', 'modified_at', 'deleted_at')
 
+    def calcular_total(self, cantidad, precio):
+        return cantidad * float(precio)  # Realizar el cálculo del total
+
     def to_representation(self, instance):
         return {
             'id': instance.id,
@@ -15,6 +18,7 @@ class CarritoDetalleSerializer(serializers.ModelSerializer):
             'impuesto': instance.impuesto,
             'total': instance.total,
             'producto': instance.producto_id.nombre if instance.producto_id is not None else '',
+            'producto_id': instance.producto_id.id if instance.producto_id is not None else '',
             'nombre_usuario': instance.usuario_id.name if instance.usuario_id is not None else '',
             'apellidos_usuario': instance.usuario_id.last_name if instance.usuario_id is not None else '',
             'direccion_usuario': instance.usuario_id.direccion if instance.usuario_id is not None else '',

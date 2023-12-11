@@ -33,7 +33,7 @@ class CarritoDetalle(BaseModel):
 class CarritoPedido(BaseModel):
     codigo = models.TextField('Codigo de pedido', max_length=10, blank=False, null=False)
     fecha_pedido = models.DateField('Fecha de pedido', auto_now=True, auto_now_add=False)
-    carrito_id = models.ForeignKey(CarritoDetalle, on_delete=models.CASCADE, verbose_name='Articulos pedido')
+    carrito_id = models.ManyToManyField(CarritoDetalle, verbose_name='Articulos pedido', related_name='pedidos')
     usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Datos del usuario para el pedido', null=True)
     historical = HistoricalRecords(inherit=True)
 

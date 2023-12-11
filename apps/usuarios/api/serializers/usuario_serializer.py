@@ -62,3 +62,9 @@ class PasswordSerializer(serializers.ModelSerializer):
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     pass
+
+class CustomSerializerLogout(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = ('')
+

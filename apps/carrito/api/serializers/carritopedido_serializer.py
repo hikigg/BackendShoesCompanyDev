@@ -3,6 +3,7 @@ from apps.carrito.models import CarritoPedido
 
 
 class CarritoPedidoSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = CarritoPedido
         exclude = ('state', 'created_at', 'modified_at', 'deleted_at')

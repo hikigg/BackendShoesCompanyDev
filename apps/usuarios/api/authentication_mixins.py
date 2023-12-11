@@ -1,6 +1,5 @@
 from rest_framework import status
 from rest_framework.authentication import get_authorization_header
-from apps.usuarios.authentication import ExpiracionTokenAuthentication
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 class Authenticacion(object):

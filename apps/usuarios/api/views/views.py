@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from apps.usuarios.api.serializers.usuario_serializer import (
-    CustomTokenObtainPairSerializer, CustomUsuarioSerializer)
+    CustomTokenObtainPairSerializer, CustomUsuarioSerializer, CustomSerializerLogout)
 from rest_framework_simplejwt.tokens import RefreshToken
 from apps.usuarios.models import Usuario
 
@@ -34,6 +34,8 @@ class Login(TokenObtainPairView):
         return Response({'error': 'Contraseña o nombre de usuario incorrectas'}, status=status.HTTP_400_BAD_REQUEST)
 
 class Logout(GenericAPIView):
+    serializer_class = CustomSerializerLogout
+
     def post(self, request, *args, **kwargs):
         user = Usuario.objects.filter(id=request.data.get('user', 0))
         if user.exists():
