@@ -70,6 +70,13 @@ class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
         related_name='usuarios_permissions',  # Related name personalizado para user_permissions
         related_query_name='user',
     )
+    roles = models.ManyToManyField(
+        Roles,
+        verbose_name='Roles del usuario',
+        related_name='usuarios_roles',
+        related_query_name='usuario',
+    )
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     historical = HistoricalRecords()
