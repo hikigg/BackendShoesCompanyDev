@@ -27,7 +27,7 @@ class CarritoDetalleSerializer(serializers.ModelSerializer):
         precio = validated_data.get('precio')
         impuesto = validated_data.get('impuesto')
 
-        total = self.calcular_total(cantidad, precio) + float(impuesto)  # Calcula el total
+        total = self.calcular_total(cantidad, precio) + (impuesto)  # Calcula el total
 
         validated_data['total'] = total  # Asigna el total al validated_data
 
