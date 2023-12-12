@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from apps.usuarios.api.serializers.usuario_serializer import UsuarioSerializer, PasswordSerializer
+from apps.usuarios.models import Roles
 
 class UsuarioViewSet(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
@@ -28,7 +29,6 @@ class UsuarioViewSet(viewsets.ModelViewSet):
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
-
     def list(self, request, *args, **kwargs):
         usuario_serializer = self.serializer_class(self.get_queryset().filter(is_active=True), many=True)
         return Response(usuario_serializer.data, status=status.HTTP_200_OK)
@@ -36,7 +36,9 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            usuario = serializer.save()
+            asignar_rol = Roles.objects.get(nombre_rol='cliente')
+            usuario.roles.add(asignar_rol)
             return Response({'message':'Usuario creado correctamente'}, status=status.HTTP_201_CREATED)
         return Response({'message':'', 'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 

@@ -78,9 +78,9 @@ class LocalUsuarioViewSet(viewsets.GenericViewSet):
     def create(self, request):
         serializer = self.serializer_class(data =request.data)
         if serializer.is_valid():
-            usuario = serializer.save()
-            asignar_rol = Roles.objects.get(nombre_rol = 'cliente')
-            usuario.roles.add(asignar_rol)
+            local = serializer.save()
+            asignar_rol = Roles.objects.get(nombre_rol='local')
+            local.roles.add(asignar_rol)
             return Response({'message':'Local para usuario creado satisfactoriamente'}, status=status.HTTP_201_CREATED)
         return Response({'message':'', 'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
