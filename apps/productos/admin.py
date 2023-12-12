@@ -15,15 +15,15 @@ class CategoriasProductoAdmin(admin.ModelAdmin):
 class TallasProductoAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion')
 
-class ImagenesProductoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'image')
+# class ImagenesProductoAdmin(admin.ModelAdmin):
+#     list_display = ('id', 'image')
 
 class CuponesProductoAdmin(admin.ModelAdmin):
     list_display = ('id', 'codigo')
 
 admin.site.register(Producto, ProductosAdmin)
 admin.site.register(OfertasProducto, OfertasProductoAdmin)
-admin.site.register(ImagenesProducto, ImagenesProductoAdmin)
+# admin.site.register(ImagenesProducto, ImagenesProductoAdmin)
 admin.site.register(TallasProducto, TallasProductoAdmin)
 admin.site.register(CuponesProducto, CuponesProductoAdmin)
 admin.site.register(CategoriasProducto, CategoriasProductoAdmin)

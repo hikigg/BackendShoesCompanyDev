@@ -54,6 +54,7 @@ class  Producto(BaseModel):
     marca = models.CharField('Marca de producto', max_length=20,  blank=False, null=False)
     genero = models.CharField('Genero de producto', max_length=15,  blank=False, null=False)
     disponible = models.PositiveSmallIntegerField()
+    image = models.ImageField('Imagen de producto', upload_to='productos/', max_length=255, null=True, blank = True)
     talla_id = models.ForeignKey(TallasProducto, on_delete=models.CASCADE, verbose_name='Talla de producto', null=True)
     categoria_id = models.ForeignKey(CategoriasProducto, on_delete=models.CASCADE, verbose_name='Categoria de Producto', null=True)
     local_usuario_id = models.ForeignKey(LocalUsuario, on_delete=models.CASCADE, verbose_name='Local del usuario', null=True)
@@ -74,26 +75,26 @@ class  Producto(BaseModel):
         verbose_name = 'Producto'
         verbose_name_plural = 'Productos'
 
-class ImagenesProducto(BaseModel):
-    codigo = models.TextField('Codigo de imagen', max_length=10, blank=False, null=False, default=0)
-    image = models.ImageField('Imagen de producto', upload_to='productos/', max_length=255, null=True, blank = True)
-    producto_id = models.ForeignKey(Producto, on_delete=models.CASCADE, verbose_name='Producto')
-    historical = HistoricalRecords(inherit=True)
-
-    @property
-    def _history_user(self):
-        return self.changed_by
-
-    @_history_user.setter
-    def _history_user(self, value):
-        self.changed_by = value
-
-    def __str__(self):
-        return self.codigo
-
-    class Meta:
-        verbose_name = 'Imagen de Producto'
-        verbose_name_plural = 'Imagenes de Productos'
+# class ImagenesProducto(BaseModel):
+#     codigo = models.TextField('Codigo de imagen', max_length=10, blank=False, null=False, default=0)
+#     image = models.ImageField('Imagen de producto', upload_to='productos/', max_length=255, null=True, blank = True)
+#     producto_id = models.ForeignKey(Producto, on_delete=models.CASCADE, verbose_name='Producto')
+#     historical = HistoricalRecords(inherit=True)
+#
+#     @property
+#     def _history_user(self):
+#         return self.changed_by
+#
+#     @_history_user.setter
+#     def _history_user(self, value):
+#         self.changed_by = value
+#
+#     def __str__(self):
+#         return self.codigo
+#
+#     class Meta:
+#         verbose_name = 'Imagen de Producto'
+#         verbose_name_plural = 'Imagenes de Productos'
 
 class OfertasProducto(BaseModel):
     tipo = models.TextField('Tipo de oferta', max_length=50, blank=False, null=False)

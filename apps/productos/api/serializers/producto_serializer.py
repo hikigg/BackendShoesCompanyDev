@@ -21,6 +21,7 @@ class ProductoSerializer(serializers.ModelSerializer):
             'precio' : instance.precio,
             'color' : instance.color,
             'genero' : instance.genero,
+            'image': instance.image.url,
             'disponible' : instance.disponible,
             'categoria': instance.categoria_id.descripcion if instance.categoria_id is not None else '',
             'talla': instance.talla_id.descripcion if instance.talla_id is not None else '',
