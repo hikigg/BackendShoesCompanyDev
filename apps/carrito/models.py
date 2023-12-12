@@ -12,7 +12,7 @@ class CarritoDetalle(BaseModel):
     total = models.TextField('Total de articulos', max_length=12, blank=False, null=True)
     producto_id = models.ForeignKey(Producto, on_delete=models.CASCADE, verbose_name='Oferta de articulos', null=True)
     usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name='Datos del usuario para los articulos', null=True)
-    cupones_id = models.ForeignKey(CuponesProducto, on_delete=models.CASCADE, verbose_name='Cupon de articulos', null=False)
+    cupones_id = models.ForeignKey(CuponesProducto, on_delete=models.CASCADE, verbose_name='Cupon de articulos', null=True)
     historical = HistoricalRecords(inherit=True)
 
     @property
