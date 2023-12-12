@@ -13,6 +13,7 @@ from rest_framework.documentation import include_docs_urls
 urlpatterns = [
     path('usuarios/', include('apps.usuarios.api.routers')),
     path('docs/', include_docs_urls(title='Documentacion API')),
+    path('admin/', admin.site.urls),
     path('login/', Login.as_view(), name = 'login'),
     path('logout/', Logout.as_view(), name='logout'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
