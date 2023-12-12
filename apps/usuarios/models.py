@@ -30,7 +30,7 @@ class UserManager(BaseUserManager):
 
 class Roles(BaseModel):
     id = models.AutoField(primary_key=True)
-    nombre_rol = models.CharField('Nombre rol', max_length=30, blank=True, null=True)
+    nombre_rol = models.CharField('Nombre rol', max_length=30, blank=True, null=True, unique=True)
     historical = HistoricalRecords()
 
     @property
@@ -69,12 +69,6 @@ class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
         help_text='Specific permissions for this user.',
         related_name='usuarios_permissions',  # Related name personalizado para user_permissions
         related_query_name='user',
-    )
-    roles = models.ManyToManyField(
-        Roles,
-        verbose_name='Roles del usuario',
-        related_name='usuarios_roles',
-        related_query_name='usuario',
     )
 
     is_active = models.BooleanField(default=True)

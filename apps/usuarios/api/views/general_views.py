@@ -4,7 +4,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from apps.base.api import GeneralListAPIView
 from apps.usuarios.models import LocalUsuario, Roles
-from apps.usuarios.api.serializers.general_serializer import  RolesSerializer, LocalUsuarioSerializer
+from apps.usuarios.api.serializers.general_serializer import  RolesSerializer
+from apps.usuarios.api.serializers.local_serializer import LocalUsuarioSerializer
 
 class RolesViewSet(viewsets.GenericViewSet):
     model = Roles
@@ -78,9 +79,7 @@ class LocalUsuarioViewSet(viewsets.GenericViewSet):
     def create(self, request):
         serializer = self.serializer_class(data =request.data)
         if serializer.is_valid():
-            local = serializer.save()
-            asignar_rol = Roles.objects.get(nombre_rol='local')
-            local.roles.add(asignar_rol)
+            serializer.save()
             return Response({'message':'Local para usuario creado satisfactoriamente'}, status=status.HTTP_201_CREATED)
         return Response({'message':'', 'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 

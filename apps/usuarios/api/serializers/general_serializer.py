@@ -7,8 +7,3 @@ class RolesSerializer(serializers.ModelSerializer):
         model = Roles
         exclude = ('state', 'created_at', 'modified_at', 'deleted_at')
 
-class LocalUsuarioSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = LocalUsuario
-        exclude = ('state', 'created_at', 'modified_at', 'deleted_at')
